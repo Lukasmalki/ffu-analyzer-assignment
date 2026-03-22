@@ -26,10 +26,12 @@ function App() {
   const [lastAnswer, setLastAnswer] = useState('')
   const [highlightedContent, setHighlightedContent] = useState('')
 
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   useEffect(() => {
     const fetchDocs = async () => {
-      const res = await fetch('/api/documents')
+      const res = await fetch(`${API_URL}/api/documents`)
       const data = await res.json()
       setDocs(data)
     }
@@ -54,7 +56,7 @@ function App() {
 
   const processFfu = async () => {
     setStatus('Processing...')
-    const data = await fetch('/api/process', { method: 'POST' }).then((r) => r.json())
+    const data = await fetch(`${API_URL}/api/process`, { method: 'POST' }).then((r) => r.json())
     setStatus(`${data.status}: ${data.count} document(s) processed`)
   }
 
@@ -65,7 +67,7 @@ function App() {
     setInput('')
     setThinking(true)
     setMessages([...history, { role: 'user', content: input.trim() }])
-    const data = await fetch('/api/chat', {
+    const data = await fetch(`${API_URL}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: input.trim(), history }),
@@ -127,7 +129,7 @@ function App() {
                 key={doc.id}
                 onClick={async () => {
                   setSelectedDoc(doc.id)
-                  const res = await fetch(`/api/documents/${doc.id}`)
+                  const res = await fetch(`${API_URL}/api/documents/${doc.id}`)
                   const data = await res.json()
                   setDocContent(data.content)
                 }}
