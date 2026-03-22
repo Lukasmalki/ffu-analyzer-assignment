@@ -32,6 +32,19 @@ async def lifespan(app):
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
+
+@app.get("/documents")
+def get_documents():
+    rows = db.execute("SELECT rowid, filename FROM documents").fetchall()
+    return [{"id": r[0], "filename": r[1]} for r in rows]
+
+
+@app.get("/documents/{id}")
+def get_document(id: int):
+    row = db.execute("SELECT content FROM documents WHERE rowid = ?", (id,)).fetchone()
+    return {"content": row[0] if row else ""}
+
+
 @app.post("/process")
 def process():
     logger.info("Processing documents...")
