@@ -33,3 +33,16 @@ npm run dev
 ```
 
 5. Open `http://localhost:5173`, click `Process FFU`, then start chatting.
+
+
+## What I built
+I built a document viewer where you can click on a document and see its content. When you ask a question to the AI, relevant parts of the text are highlighted.
+
+## Why I built it
+The goal is to quickly see which parts of a document are important for a question without reading everything. Saves time.
+
+## What I would do next
+If I had more time I would:
+* Make the highlights better match what the AI answers, so the most relevant parts are easier to see.
+* Add search feature for long documents.
+* Improve styling for better UX.
