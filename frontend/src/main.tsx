@@ -31,7 +31,7 @@ function App() {
 
   useEffect(() => {
     const fetchDocs = async () => {
-      const res = await fetch(`${API_URL}/api/documents`)
+      const res = await fetch(`${API_URL}/documents`)
       const data = await res.json()
       setDocs(data)
     }
@@ -56,7 +56,7 @@ function App() {
 
   const processFfu = async () => {
     setStatus('Processing...')
-    const data = await fetch(`${API_URL}/api/process`, { method: 'POST' }).then((r) => r.json())
+    const data = await fetch(`${API_URL}/process`, { method: 'POST' }).then((r) => r.json())
     setStatus(`${data.status}: ${data.count} document(s) processed`)
   }
 
@@ -67,7 +67,7 @@ function App() {
     setInput('')
     setThinking(true)
     setMessages([...history, { role: 'user', content: input.trim() }])
-    const data = await fetch(`${API_URL}/api/chat`, {
+    const data = await fetch(`${API_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: input.trim(), history }),
@@ -129,7 +129,7 @@ function App() {
                 key={doc.id}
                 onClick={async () => {
                   setSelectedDoc(doc.id)
-                  const res = await fetch(`${API_URL}/api/documents/${doc.id}`)
+                  const res = await fetch(`${API_URL}/documents/${doc.id}`)
                   const data = await res.json()
                   setDocContent(data.content)
                 }}
