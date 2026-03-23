@@ -50,12 +50,14 @@ def process():
     logger.info("Processing documents...")
     db.execute("DELETE FROM documents"); db.commit()
     paths = sorted(data_dir.rglob("*.pdf"))
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(extract, path): path for path in paths}
-        for future in as_completed(futures):
-            path = futures[future]
-            db.execute("INSERT INTO documents(filename, content) VALUES(?, ?)", (path.name, future.result())); db.commit()
+    for path in paths:
+        try:
+            content = extract(path)
+            db.execute("INSERT INTO documents(filename, content) VALUES(?, ?)", (path.name, content))
+            db.commit()
             logger.info(f"Processed {path.name}")
+        except Exception as e:
+            logger.error(f"Failed {path.name}: {e}")
     return {"status": "ok", "count": len(paths)}
 
 
