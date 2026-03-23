@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 db = sqlite3.connect(Path(__file__).with_name("ffu.db"), check_same_thread=False)
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-data_dir = Path("data")
+data_dir = Path(__file__).parent / "data" / "ffu"
 extract = lambda path: pymupdf4llm.to_markdown(str(path), ignore_images=True, ignore_graphics=True)
 
 
